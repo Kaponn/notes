@@ -4,11 +4,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.NonNull
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.note_item.view.*
 
-class NoteAdapter(private var notes : List<Note>) : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
+class NoteAdapter : ListAdapter<Note, NoteAdapter.NoteHolder>(
+    object : DiffUtil.ItemCallback<Note>() {
+        override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean = oldItem == newItem
 
+        override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean = oldItem == newItem
+    }
+) {
+    @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.note_item, parent,false)
 
@@ -16,18 +25,9 @@ class NoteAdapter(private var notes : List<Note>) : RecyclerView.Adapter<NoteAda
     }
 
     override fun onBindViewHolder(holder: NoteHolder, position: Int) {
-        val currentNote = notes[position]
-
-        holder.textViewTitle.text = currentNote.title
-        holder.textViewDescription.text = currentNote.description
-        holder.textViewPriority.text = currentNote.priority.toString()
-    }
-
-    override fun getItemCount() = notes.size
-
-    fun setNotes(notes: List<Note>) {
-        this.notes = notes
-        notifyDataSetChanged()
+        holder.textViewTitle.text = getItem(position)?.title
+        holder.textViewDescription.text = getItem(position)?.description
+        holder.textViewPriority.text = getItem(position)?.priority?.toString()
     }
 
     class NoteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

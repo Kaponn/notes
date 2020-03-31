@@ -1,11 +1,9 @@
 package com.example.notes
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 
-class NoteViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: NoteRepository = NoteRepository(application)
+class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
 
     fun insert(note: Note) {
         repository.insert(note)
@@ -19,9 +17,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
         repository.delete(note)
     }
 
-    fun getAll(): LiveData<List<Note>> {
-        return repository.getAll()
-    }
+    fun getAll(): LiveData<List<Note>> = repository.getAll()
 
     fun deleteAll() {
         repository.deleteAll()

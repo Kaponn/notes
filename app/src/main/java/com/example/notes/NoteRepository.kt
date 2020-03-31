@@ -4,10 +4,7 @@ import android.app.Application
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 
-class NoteRepository(application: Application) {
-    private val database: NoteDatabase = NoteDatabase.getInstance(application)
-    private val noteDao: NoteDao = database.noteDao()
-
+class NoteRepository(private val noteDao: NoteDao) {
     fun insert(note: Note) {
         InsertNoteAsyncTask(noteDao).execute(note)
     }
@@ -21,12 +18,10 @@ class NoteRepository(application: Application) {
     }
 
     fun deleteAll() {
-        DeleteAllAsyncTask(noteDao).execute()
+        DeleteNoteAsyncTask(noteDao).execute()
     }
 
-    fun getAll(): LiveData<List<Note>> {
-        return noteDao.getAllNotes()
-    }
+    fun getAll(): LiveData<List<Note>> = noteDao.getAllNotes()
 
     private class InsertNoteAsyncTask(private val noteDao: NoteDao) : AsyncTask<Note, Void, Void>() {
         override fun doInBackground(vararg notes: Note): Void? {
