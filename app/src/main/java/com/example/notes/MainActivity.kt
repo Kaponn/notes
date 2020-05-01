@@ -26,7 +26,6 @@ const val EDIT_NOTE_REQUEST = 2
 class MainActivity : AppCompatActivity() {
 
   private lateinit var viewModel: NoteViewModel
-  private val swipeColor: ColorDrawable = ColorDrawable(Color.parseColor("#981815"))
   private val deleteIcon: Drawable by lazy { this.getDrawable(R.drawable.ic_delete)!! }
   private val adapter = NoteAdapter()
 
@@ -81,21 +80,13 @@ class MainActivity : AppCompatActivity() {
           super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
 
           val itemView = viewHolder.itemView
-          // val iconMargin = (itemView.top + deleteIcon.intrinsicHeight) / 2
 
           if (dX > 0) {
-            swipeColor.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
             deleteIcon.setBounds(
               itemView.left + 32, itemView.top + 32,
               itemView.left + deleteIcon.intrinsicWidth + 32, itemView.bottom - 32
             )
           } else {
-            swipeColor.setBounds(
-              itemView.right + dX.toInt(),
-              itemView.top,
-              itemView.right,
-              itemView.bottom
-            )
             deleteIcon.setBounds(
               itemView.right - deleteIcon.intrinsicWidth - 32,
               itemView.top + 32,
@@ -103,8 +94,6 @@ class MainActivity : AppCompatActivity() {
               itemView.bottom - 32
             )
           }
-
-//          swipeColor.draw(c)
           deleteIcon.setTint(resources.getColor(R.color.colorPrimaryDark))
           deleteIcon.draw(c)
         }
