@@ -18,7 +18,7 @@ class NoteRepository(private val noteDao: NoteDao) {
     }
 
     fun deleteAll() {
-        DeleteNoteAsyncTask(noteDao).execute()
+        DeleteAllAsyncTask(noteDao).execute()
     }
 
     fun getAll(): LiveData<List<Note>> = noteDao.getAllNotes()
